@@ -1,99 +1,3 @@
-
-To save the data from your registration form into a database using PHP, you'll need to set up a few things:
-
-Database Connection: Establish a connection to your database.
-User Class: Create a class to handle user data.
-Form Handling: Process the form submission and save the data using the user class.
-Here's how you can do it:
-
-1. Database Connection
-Create a separate file, db.php, to handle the database connection.
-
-php
-Copy code
-<?php
-class Database {
-    private $host = "localhost";
-    private $db_name = "your_database_name";
-    private $username = "your_database_username";
-    private $password = "your_database_password";
-    public $conn;
-
-    public function getConnection() {
-        $this->conn = null;
-        try {
-            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
-            $this->conn->exec("set names utf8");
-        } catch(PDOException $exception) {
-            echo "Connection error: " . $exception->getMessage();
-        }
-        return $this->conn;
-    }
-}
-?>
-2. User Class
-Create a User.php file to handle user data.
-
-php
-Copy code
-<?php
-class User {
-    private $conn;
-    private $table_name = "users";
-
-    public $username;
-    public $email;
-    public $password;
-    public $firstName;
-    public $lastName;
-    public $phone;
-    public $bio;
-
-    public function __construct($db) {
-        $this->conn = $db;
-    }
-
-    public function create() {
-        $query = "INSERT INTO " . $this->table_name . "
-            SET
-                username = :username,
-                email = :email,
-                password = :password,
-                firstName = :firstName,
-                lastName = :lastName,
-                phone = :phone,
-                bio = :bio";
-
-        $stmt = $this->conn->prepare($query);
-
-        $this->username=htmlspecialchars(strip_tags($this->username));
-        $this->email=htmlspecialchars(strip_tags($this->email));
-        $this->password=password_hash($this->password, PASSWORD_BCRYPT);
-        $this->firstName=htmlspecialchars(strip_tags($this->firstName));
-        $this->lastName=htmlspecialchars(strip_tags($this->lastName));
-        $this->phone=htmlspecialchars(strip_tags($this->phone));
-        $this->bio=htmlspecialchars(strip_tags($this->bio));
-
-        $stmt->bindParam(":username", $this->username);
-        $stmt->bindParam(":email", $this->email);
-        $stmt->bindParam(":password", $this->password);
-        $stmt->bindParam(":firstName", $this->firstName);
-        $stmt->bindParam(":lastName", $this->lastName);
-        $stmt->bindParam(":phone", $this->phone);
-        $stmt->bindParam(":bio", $this->bio);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-        return false;
-    }
-}
-?>
-3. Form Handling
-Modify your registration.php to handle form submissions.
-
-php
-Copy code
 <?php
 require_once 'db.php';
 require_once 'User.php';
@@ -113,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user->bio = $_POST['bio'];
 
     if ($user->create()) {
-        echo "<div class='alert alert-success'>User was created.</div>";
+        echo "<div class='alert alert-success'>Success! User has been create.</div>";
     } else {
         echo "<div class='alert alert-danger'>Unable to create user.</div>";
     }
@@ -146,9 +50,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </style>
 </head>
 <body>
-  <div class="container mt-5">
+ 
+<div class="container mt-5">
     <h1>User Registration</h1>
-    <form>
+    <form method="POST" action="index.php">
       <div class="mb-3">
         <label for="username" class="form-label">Username</label>
         <input type="text" class="form-control" id="username" name="username" required>

@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS orders (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
---- Create Users Table 
-CREATE TABLE users (
+-- Create registration table 
+CREATE TABLE registration (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,

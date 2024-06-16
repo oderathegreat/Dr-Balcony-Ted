@@ -1,7 +1,7 @@
 <?php
 class User {
     private $conn;
-    private $table_name = "users";
+    private $table_name = "registration";
 
     public $username;
     public $email;
