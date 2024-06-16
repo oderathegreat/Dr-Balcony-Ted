@@ -12,7 +12,7 @@ This project provides a user registration form and displays user order statistic
 ### 1. Clone the repository
 
 ```sh
-git clone https://github.com/your-username/your-repository.git
+git clone https://github.com/oderathegreat/Dr-Balcony-Ted.git
 cd your-repository
 
 ## 2  Build the Docker image
