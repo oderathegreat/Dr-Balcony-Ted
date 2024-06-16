@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  php-apache:
+    ports:
+      - "8000:80"
+    build: './build/php'
+    volumes:
+      - ./src:/var/www/html
+  mysql:
+    ports:
+      - "3300:3306"
+    build: './build/mysql'
+    environment:
+          MYSQL_ROOT_PASSWORD: "secret"
+          MYSQL_DATABASE: "DrBalcony"
+          MYSQL_USER: "ted"
+          MYSQL_PASSWORD: "super-secret"
+    volumes:
+      - dbData:/var/lib/mysql
+      - ./build/sql:/docker-entrypoint-initdb.d
+volumes:
+  app:
+  dbData:
