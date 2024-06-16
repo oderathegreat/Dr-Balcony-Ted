@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user->bio = $_POST['bio'];
 
     if ($user->create()) {
-        echo "<div class='alert alert-success'>Success! User has been create.</div>";
+        echo "<div class='alert alert-success'>Success! User has been created.</div>";
     } else {
         echo "<div class='alert alert-danger'>Unable to create user.</div>";
     }
